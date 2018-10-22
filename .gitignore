@@ -1,3 +1,7 @@
 .project
 .classpath
 bin/
+*.class
+examples/blocks/problem.java
+examples/blocks/blocks.java
+examples/blocks/blocks.txt
