@@ -1,0 +1,39 @@
+;;; This file contains a SHOP domain representation of the block-stacking
+;;; algorithm from the following paper:
+;;;    N. Gupta and D. Nau, On the complexity of blocks-world planning,
+;;;    Artificial Intelligence 56(2-3):223-254, August 1992.
+
+
+;;; ------------------------------------------------------------------------
+;;; Declare all the data
+;;; ------------------------------------------------------------------------
+
+(defdomain banjo_kiwi
+    (
+
+        ;; pick up and drop operators
+        (:operator  (!drop ?x)
+                    ()
+                    ((have ?x))
+                    ((not_have ?x)))
+
+        (:operator (!pickup ?x)
+                ()
+                ()
+                ((have ?x)))
+
+        ;; The method for the top-layer task
+        (:method (swap ?x ?y)
+
+            swap1
+            (have ?x)
+            ((!drop ?x) (!pickup ?y))
+
+            swap2
+            (have ?y)
+            ((!drop ?y) (!pickup ?x))
+
+        )
+        
+    )
+)
