@@ -1,0 +1,60 @@
+;;; This file contains a SHOP domain representation of the block-stacking
+;;; algorithm from the following paper:
+;;;    N. Gupta and D. Nau, On the complexity of blocks-world planning,
+;;;    Artificial Intelligence 56(2-3):223-254, August 1992.
+
+
+;;; ------------------------------------------------------------------------
+;;; Declare all the data
+;;; ------------------------------------------------------------------------
+
+(defdomain banjo_kiwi
+    (
+
+        ;; The method for sailling between two waypoints
+        (:method (sail)
+
+            sail1
+            ((at boat ?posX)(waypoint-last ?posX))                          ;; Reached last waypoint
+            ()
+
+            sail2
+            ((at boat ?posX)(not(waypoint-last ?posX))(way-free boat))      ;; Not reached last waypoint, way is free (no obstacle)
+            ((!verify-collision)(goto-next-position posX)(sail))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
+
+            sail3
+            ((at boat ?posX)(not(waypoint-last ?posX))(not(way-free boat))) ;; Not reached last waypoint, obstacle detected
+            ((colreg-decision)(sail))
+            
+        )
+
+        ;; The method for obstacle avoidance
+        (:method (colregs-decision)
+
+            head-on
+            (on intruder head-on-angle)
+            ((!evade-by-starboard))
+
+            overtaking-right-crossing
+            (on intruder overtaking-right-angle)
+            ((!overtake-by- ?x))
+
+            overtaking-left-crossing
+            (on intruder overtaking-left-angle)
+            ((!drop ?y) (!pickup ?x))
+
+            crossing
+            (on intruder crossing-angle)
+            ((!drop ?y) (!pickup ?x))
+
+        )
+        
+        ;; pick up and drop operators
+        (:operator  (!verify-collision)
+                    ()
+                    (danger-zone-intruder-detected)
+                    (not(boat way-free boat))
+        )
+        
+    )
+)

@@ -91,3 +91,17 @@ d: src/JSHOP2/*.java
 	cd examples/madrts; javac gui.java
 	cd examples/madrts; java gui 
 	cd examples/madrts; rm madrts.java; rm madrts.txt; rm problem.java; rm *.class
+
+12: bin.build/JSHOP2.jar
+	cd examples/banjo_kiwi; java JSHOP2.InternalDomain domain
+	cd examples/banjo_kiwi; java JSHOP2.InternalDomain -r problem
+	cd examples/banjo_kiwi; javac gui.java
+	cd examples/banjo_kiwi; java gui
+	cd examples/banjo_kiwi; rm domain.java; rm domain.txt; rm problem.java; rm *.class
+
+13: bin.build/JSHOP2.jar
+	cd examples/colregs; java JSHOP2.InternalDomain domain
+	cd examples/colregs; java JSHOP2.InternalDomain -r problem
+	cd examples/colregs; javac gui.java
+	cd examples/colregs; java gui
+	cd examples/colregs; rm domain.java; rm domain.txt; rm problem.java; rm *.class

@@ -1,0 +1,11 @@
+(defproblem problem banjo_kiwi
+    (
+        (banjo  b1)
+        (kiwi   k1)
+        (have   k1)
+    )
+
+    (
+        (swap   k1  b1)
+    )
+)
