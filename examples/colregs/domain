@@ -52,7 +52,7 @@
         ;; Method for sailling between two waypoints
         (:method (goto-next-position ?boat ?gc)
 
-            move-E
+            move
             ((boat-head ?boat ?dir)(order ?dir)(ADJ ?dir ?adj-gc ?gc))
             ((!goto ?boat ?gc ?adj-gc))
 
