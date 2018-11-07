@@ -21,7 +21,7 @@
         ;;;; First line
         ;;;;;;;; GC_A1                     
                                 (ADJ-E  GC_A2 GC_A1)  
-        (ADJ-S  GC_B1 GC_A1)    (ADJ-SE GC_C1 GC_A1)                        
+        (ADJ-S  GC_B1 GC_A1)    (ADJ-SE GC_B2 GC_A1)                        
         ;;;;;;;; GC_A2
         (ADJ-W  GC_A1 GC_A2)                            (ADJ-E  GC_A3 GC_A2)
         (ADJ-SW GC_B1 GC_A2)    (ADJ-S  GC_B2 GC_A2)    (ADJ-SE GC_B3 GC_A2)
@@ -109,10 +109,13 @@
         (ADJ-W  GC_C6 GC_C6)
         
 
-        
+
         ;;;
         ;;;  initial states
         ;;;
+        (boat boat1)
+        (at boat1 GC_B1)
+        (boat-head E)
         
     )
 
@@ -120,5 +123,6 @@
         ;;;
         ;;;  goals
         ;;;
+        (at boat1 GC_B3)
     )
 )

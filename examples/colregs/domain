@@ -12,18 +12,18 @@
     (
 
         ;; The method for sailling between two waypoints
-        (:method (sail)
+        (:method (sail ?boat ?gc ?dest)
 
             sail1
-            ((at boat ?posX)(waypoint-last ?posX))                          ;; Reached last waypoint
+            ((at ?boat ?gc)(waypoint-last ?gc))                          ;; Reached last waypoint
             ()
 
             sail2
-            ((at boat ?posX)(not(waypoint-last ?posX))(way-free boat))      ;; Not reached last waypoint, way is free (no obstacle)
-            ((!verify-collision)(goto-next-position posX)(sail))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
+            ((at ?boat ?gc)(not(waypoint-last ?gc))(way-free ?boat))      ;; Not reached last waypoint, way is free (no obstacle)
+            ((!detect-collision)(goto-next-position gc)(sail))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
 
             sail3
-            ((at boat ?posX)(not(waypoint-last ?posX))(not(way-free boat))) ;; Not reached last waypoint, obstacle detected
+            ((at boat ?gc)(not(waypoint-last ?gc))(not(way-free boat))) ;; Not reached last waypoint, obstacle detected
             ((colreg-decision)(sail))
             
         )
@@ -48,12 +48,66 @@
             ((!drop ?y) (!pickup ?x))
 
         )
+
+        ;; Method for sailling between two waypoints
+        (:method (goto-next-position ?gc)
+
+            move-E
+            ((boat-head boat E)(order E)(ADJ-E ?adj-gc ?gc))
+            (at boat ?adj-gc)
+
+            move-SE-S
+            ((boat-head boat S) (order SE) (ADJ-SE ?adj-gc ?gc) )
+            (at boat ?adj-gc)
+
+            move-SE-E
+            ((boat-head boat E) (order SE) (ADJ-SE ?adj-gc ?gc) )
+            (at boat ?adj-gc)
+
+            move-S
+            ((boat-head boat S)(order S)(ADJ-S ?adj-gc ?gc))
+            (at boat ?adj-gc)
+
+            move-SW-S
+            ((boat-head boat S) (order SW) (ADJ-SW ?adj-gc ?gc) )
+            (at boat ?adj-gc)
+
+            move-SW-W
+            ((boat-head boat W) (order SW) (ADJ-SW ?adj-gc ?gc) )
+            (at boat ?adj-gc)
+
+            move-W
+            ((boat-head boat W) (order W)(ADJ-W ?adj-gc ?gc))
+            (at boat ?adj-gc)
+
+            move-NW-N
+            ((boat-head boat N) (order NW) (ADJ-NW ?adj-gc ?gc) )
+            (at boat ?adj-gc)
+
+            move-NW-W
+            ((boat-head boat W) (order NW) (ADJ-NW ?adj-gc ?gc) )
+            (at boat ?adj-gc)
+
+            move-N
+            ((boat-head boat N) (order N)(ADJ-N ?adj-gc ?gc))
+            (at boat ?adj-gc)
+
+            move-NE-N
+            ((boat-head boat N) (order NE)(ADJ-NE ?adj-gc ?gc))
+            (at boat ?adj-gc)
+
+            move-NE-E
+            ((boat-head boat E) (order NE)(ADJ-NE ?adj-gc ?gc))
+            (at boat ?adj-gc)
+
+        )
         
-        ;; pick up and drop operators
-        (:operator  (!verify-collision)
+        ;; Detect-collision operator
+        (:operator  (!detect-collision ?boat ?boat-head ?order)
+
+                    (((at ?boat ?gc)(ADJ-E ?adj_gc ?gc)()))
+                    (way-free boat)
                     ()
-                    (danger-zone-intruder-detected)
-                    (not(boat way-free boat))
-        )        
+    )        
     )
 )
