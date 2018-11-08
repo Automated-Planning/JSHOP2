@@ -11,44 +11,20 @@
 (defdomain colregs
     (
 
-        ;; pick up and drop operators
-        (:operator  (!drop ?x)
-                    ()
-                    ((have ?x))
-                    ((not_have ?x)))
-
-        (:operator (!pickup ?x)
-                ()
-                ()
-                ((have ?x)))
-
-        ;; The method for the top-layer task
-        (:method (swap ?x ?y)
-
-            swap1
-            (have ?x)
-            ((!drop ?x) (!pickup ?y))
-
-            swap2
-            (have ?y)
-            ((!drop ?y) (!pickup ?x))
-
-        )
-
         ;; The method for sailling between two waypoints
-        (:method (sail ?boat ?boat-head ?gc ?dest)
+        (:method (sail ?boat ?boat-head ?gc)
 
             sail1
             ((at ?boat ?gc)(waypoint-last ?gc))                          ;; Reached last waypoint
             ()
 
             sail2
-            ((at ?boat ?gc)(not(waypoint-last ?gc))(way-free ?boat))      ;; Not reached last waypoint, way is free (no obstacle)
-            ((!verify-collision )(goto-next-position ?gc)(sail))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
+            ((at ?boat ?gc)(way-free ?boat))      ;; Not reached last waypoint, way is free (no obstacle)
+            ((!verify-collision ?boat ?boat-head)(goto-next-position ?boat ?gc)(sail ?boat ?boat-head ?gc))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
 
             sail3
             ((at boat ?gc)(not(waypoint-last ?gc))(not(way-free boat))) ;; Not reached last waypoint, obstacle detected
-            ((colreg-decision)(sail))
+            ((colreg-decision)(sail ?boat ?boat-head ?gc))
             
         )
 
@@ -69,16 +45,9 @@
 
         ;; verify-collision operator
         (:operator (!verify-collision ?boat ?boat-head)
-            (forall (?gc) 
-                    ((at ?boat ?gc) (forall (?adj_gc) 
-                                            ((ADJ ?boat-head ?adj_gc ?gc))
-                                            ()
-                                    )
-                    ) 
-                    ()
-            )
+            ((at ?boat ?gc)(adj ?boat-head ?adj_gc ?gc)(occupied ?adj_gc))
             ((way-free ?boat))
-            ()
+            nil
         )
         
     )
