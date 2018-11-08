@@ -19,8 +19,8 @@
             ()
 
             sail2
-            ((at ?boat ?gc)(way-free ?boat))      ;; Not reached last waypoint, way is free (no obstacle)
-            ((!verify-collision ?boat ?boat-head)(goto-next-position ?boat ?gc)(sail ?boat ?boat-head ?gc))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
+            ((at ?boat ?gc)(way-free ?boat)(adj ?boat-head ?adj-gc ?gc))      ;; Not reached last waypoint, way is free (no obstacle)
+            ((!verify-collision ?boat ?boat-head)(goto-next-position ?boat ?gc)(sail ?boat ?boat-head ?adj-gc))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
 
             sail3
             ((at boat ?gc)(not(waypoint-last ?gc))(not(way-free boat))) ;; Not reached last waypoint, obstacle detected
@@ -34,20 +34,21 @@
             move
             ((boat-head ?boat ?dir)(ADJ ?dir ?adj-gc ?gc))
             ((!goto ?boat ?gc ?adj-gc))
+            
 
         )
 
         (:operator (!goto ?boat ?gc ?adj-gc)
             ()
             ((at ?boat ?gc)(occupied ?gc))
-            ((at ?boat ?adj-gc))
+            ((at ?boat ?adj-gc)(occupied ?adj-gc))
         )
 
         ;; verify-collision operator
         (:operator (!verify-collision ?boat ?boat-head)
-            ((at ?boat ?gc)(adj ?boat-head ?adj_gc ?gc)(occupied ?adj_gc))
+            ((at ?boat ?gc)(adj ?boat-head ?adj_gc ?gc)(not(occupied ?adj_gc)))
+            ()
             ((way-free ?boat))
-            nil
         )
         
     )
