@@ -69,14 +69,7 @@
 
         ;; verify-collision operator
         (:operator (!verify-collision ?boat ?boat-head)
-            (forall (?gc) 
-                    ((at ?boat ?gc) (forall (?adj_gc) 
-                                            ((ADJ ?boat-head ?adj_gc ?gc))
-                                            ()
-                                    )
-                    ) 
-                    ()
-            )
+            ((at ?boat ?gc)(ADJ ?boat-head ?adj_gc ?gc)(occupied ?adj_gc))
             ((way-free ?boat))
             ()
         )
