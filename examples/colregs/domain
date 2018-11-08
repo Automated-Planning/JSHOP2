@@ -36,7 +36,7 @@
         )
 
         ;; The method for sailling between two waypoints
-        (:method (sail ?boat ?gc ?dest)
+        (:method (sail ?boat ?boat-head ?gc ?dest)
 
             sail1
             ((at ?boat ?gc)(waypoint-last ?gc))                          ;; Reached last waypoint
@@ -44,7 +44,7 @@
 
             sail2
             ((at ?boat ?gc)(not(waypoint-last ?gc))(way-free ?boat))      ;; Not reached last waypoint, way is free (no obstacle)
-            ((!verify-collision)(goto-next-position gc)(sail))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
+            ((!verify-collision )(goto-next-position ?gc)(sail))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
 
             sail3
             ((at boat ?gc)(not(waypoint-last ?gc))(not(way-free boat))) ;; Not reached last waypoint, obstacle detected
@@ -68,8 +68,15 @@
         )
 
         ;; verify-collision operator
-        (:operator  (!verify-collision ?boat ?boat-head)
-            ((at ?boat ?gc)(ADJ ?boat-head ?adj_gc ?gc)(occupied ?adj_gc))
+        (:operator (!verify-collision ?boat ?boat-head)
+            (forall (?gc) 
+                    ((at ?boat ?gc) (forall (?adj_gc) 
+                                            ((ADJ ?boat-head ?adj_gc ?gc))
+                                            ()
+                                    )
+                    ) 
+                    ()
+            )
             ((way-free ?boat))
             ()
         )
