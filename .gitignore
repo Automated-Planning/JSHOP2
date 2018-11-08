@@ -2,10 +2,8 @@
 .classpath
 bin/
 *.class
-examples/blocks/problem.java
-examples/blocks/blocks.java
-examples/blocks/blocks.txt
+*.java
+*.txt
 examples/basic/basic.domain
 examples/colregs_backup/domain
-examples/colregs_backup/gui.java
 examples/colregs_backup/problem

@@ -8,7 +8,7 @@
 ;;; Declare all the data
 ;;; ------------------------------------------------------------------------
 
-(defdomain banjo_kiwi
+(defdomain colregs
     (
 
         ;; pick up and drop operators
@@ -33,6 +33,45 @@
             (have ?y)
             ((!drop ?y) (!pickup ?x))
 
+        )
+
+        ;; The method for sailling between two waypoints
+        (:method (sail ?boat ?gc ?dest)
+
+            sail1
+            ((at ?boat ?gc)(waypoint-last ?gc))                          ;; Reached last waypoint
+            ()
+
+            sail2
+            ((at ?boat ?gc)(not(waypoint-last ?gc))(way-free ?boat))      ;; Not reached last waypoint, way is free (no obstacle)
+            ((!verify-collision)(goto-next-position gc)(sail))            ;; Verify collision and go to next detected free position ;; maybe change to a simpler "keep going"
+
+            sail3
+            ((at boat ?gc)(not(waypoint-last ?gc))(not(way-free boat))) ;; Not reached last waypoint, obstacle detected
+            ((colreg-decision)(sail))
+            
+        )
+
+        ;; Method for sailling between two waypoints
+        (:method (goto-next-position ?boat ?gc)
+
+            move
+            ((boat-head ?boat ?dir)(ADJ ?dir ?adj-gc ?gc))
+            ((!goto ?boat ?gc ?adj-gc))
+
+        )
+
+        (:operator (!goto ?boat ?gc ?adj-gc)
+            ()
+            ((at ?boat ?gc)(occupied ?gc))
+            ((at ?boat ?adj-gc))
+        )
+
+        ;; verify-collision operator
+        (:operator  (!verify-collision ?boat ?boat-head)
+            ((at ?boat ?gc)(ADJ ?boat-head ?adj_gc ?gc)(occupied ?adj_gc))
+            ((way-free ?boat))
+            ()
         )
         
     )
