@@ -99,7 +99,7 @@ d: src/JSHOP2/*.java
 	cd examples/banjo_kiwi; java gui
 	cd examples/banjo_kiwi; rm domain.java; rm domain.txt; rm problem.java; rm *.class
 
-13: bin.build/JSHOP2.jar
+colregs: bin.build/JSHOP2.jar
 	cd examples/colregs; java JSHOP2.InternalDomain domain
 	cd examples/colregs; java JSHOP2.InternalDomain -r problem
 	cd examples/colregs; javac gui.java
