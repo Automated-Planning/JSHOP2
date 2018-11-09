@@ -139,8 +139,8 @@
 
         (:operator (!head-on-detected ?boat)
             ()
-            ((way-free ?boat)))
-            (colregs head-on)
+            ((way-free ?boat))
+            ((colregs head-on))
         )
 
         (:operator (!goto ?boat ?gc ?adj-gc)
