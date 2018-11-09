@@ -124,13 +124,14 @@
 
         (boat       boat1                   )
         (at         boat1       GC_B1       )
-        (occupied   GC_B1                   )
         (boat-head  boat1       E           )
         (way-free   boat1                   )
+
         ;;(boat       intruder                )
-        ;;(at         intruder    GC_B6       )  
-        ;;(occupied   GC_B6                   )
-        ;;(boat-head  intruder    W           )
+        ;;(at         intruder    GC_B6       )
+        ;;(boat-head  boat1       W           )
+        ;;(way-free   boat1                   )
+        
         
     )
 
@@ -140,5 +141,6 @@
         ;;;
 
         (sail   boat1   E   GC_B1)
+        ;; (sail   boat1   E   GC_B1)
     )
 )

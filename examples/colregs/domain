@@ -40,13 +40,13 @@
 
         (:operator (!goto ?boat ?gc ?adj-gc)
             ()
-            ((at ?boat ?gc)(occupied ?gc))
-            ((at ?boat ?adj-gc)(occupied ?adj-gc))
+            ((at ?boat ?gc))
+            ((at ?boat ?adj-gc))
         )
 
         ;; verify-collision operator
         (:operator (!verify-collision ?boat ?boat-head)
-            ((at ?boat ?gc)(adj ?boat-head ?adj_gc ?gc)(not(occupied ?adj_gc)))
+            ((at ?boat ?gc)(adj ?boat-head ?adj_gc ?gc)(not(at ?intruder ?adj_gc)))
             ()
             ((way-free ?boat))
         )
