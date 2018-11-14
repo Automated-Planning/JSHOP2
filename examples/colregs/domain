@@ -14,38 +14,42 @@
         ;; The method for sailling between two waypoints
         (:method (sail ?boat ?boat-head ?gc)
 
-            sail1
-            (   
+            sail1_LastWaypointReached
+            (;;precond
                 ;; Reached last waypoint
+
                 (at             ?boat ?gc   )
                 (waypoint-last  ?gc         )
             )                                     
-            ()
+            ();; tasks network
 
-            sail2
-            (   
+            sail2_NotEnd_WayFree
+            (;;precond   
                 ;; NOT reached last waypoint, way is free (no obstacle)
+
                 (at                 ?boat       ?gc             )
                 (NOT(waypoint-last  ?gc)                        )
                 (way-free           ?boat                       )
-                (adj                ?boat-head  ?adj-gc     ?gc )
+                (adj                ?boat-head  ?adj-gc     ?gc )           ;; gets adj-gc
             )                    
-            (
+            (;; tasks network
                 ;; Verify collision and go to next detected free position
+
                 (!verify-collision  ?boat   ?boat-head          )
                 (goto-next-position ?boat   ?gc                 )
                 (sail               ?boat   ?boat-head ?adj-gc  )
             )     
 
-            sail3
-            (
+            sail3_NotEnd_ObstacleDetected
+            (;;precond
                 ;; NOT reached last waypoint, obstacle detected
+
                 (at                 ?boat       ?gc             )
                 (NOT(waypoint-last  ?gc)                        )
                 (NOT(way-free       ?boat)                      )
                 (adj                ?boat-head  ?adj-gc     ?gc )
             )               
-            (
+            (;; tasks network
                 (colreg-decision)
                 (sail               ?boat   ?boat-head      ?adj-gc )
             )
@@ -56,76 +60,77 @@
         (:method (goto-next-position ?boat ?gc)
 
             move
-            (
+            (;;precond
                 (boat-head  ?boat   ?dir        )
                 (adj        ?dir    ?adj-gc ?gc )
             )
-            (
+            (;; tasks network
                 (!goto      ?boat   ?gc     ?adj-gc)
             )
             
 
         )
 
-        ;; Method for sailling between two waypoints
-        (:method (verify-collision ?boat ?boat-head)
+        ;; 
+        (:method (colreg-decision ?boat ?boat-head)
 
             head-on
-            (   
+            (;;precond   
                 (at     ?boat       ?gc                 )   ;; Discovers boat's current grid cell
                 (adj    ?boat-head  ?adj_gc ?gc         )   ;; Discovers adjascent grid explicity ahead
                 (at     ?intruder   ?adj_gc             )   ;; Discovers if adjascent grid explicity ahead is occupied
                 (adj    ?boat-head  ?adj_gc_2 ?adj_gc   )   ;; Discovers adjascent grid 2 steps ahead
                 (at     ?intruder   ?adj_gc_2           )   ;; Discovers if adjascent grid 2 steps ahead is occupied
             )
-            (
-                (!operator head-on-detected)
+            (;; tasks network
+                (!operator head-on-detected boat boat-head)
             )
 
             crossing-starboard
-            (   
-                (at ?boat   ?gc)    ;; Discovers boat's current grid cell
-                (OR                 ;; Discovers boat's adjascent grid cell
+            (;;precond   
+                (at ?boat   ?gc)                ;; Discovers boat's current grid cell
+                
+                (OR                             ;; Discovers boat's adjascent grid cell
                     (   
-                        (boat-head ?boat E)                
-                        (adj SE ?adj_gc ?gc)    ;; Discovers adjascent grid cell                
+                        (boat-head ?boat E)     ;; current EAST
+                        (adj SE ?adj_gc ?gc)    ;; adjascent SE
                     )
                     (   
-                        (boat-head ?boat S)                
-                        (adj SW ?adj_gc ?gc)    ;; Discovers adjascent grid cell            
+                        (boat-head ?boat S)     ;; current SOUTH
+                        (adj SW ?adj_gc ?gc)    ;; adjascent SW
                     )
                     (   
-                        (boat-head ?boat W)                
-                        (adj NW ?adj_gc ?gc)    ;; Discovers adjascent grid cell
+                        (boat-head ?boat W)     ;; current WEST
+                        (adj NW ?adj_gc ?gc)    ;; adjascent NW
                     )
                     (   
-                        (boat-head ?boat N)                
-                        (adj NE ?adj_gc ?gc)    ;; Discovers adjascent grid cell
+                        (boat-head ?boat N)     ;; current NORTH
+                        (adj NE ?adj_gc ?gc)    ;; adjascent NE
                     )
                 
                 )
-                
-                (at ?intruder ?adj_gc)                  ;; Discovers if adjascent grid is occupied
-                (OR 
+                (at ?intruder ?adj_gc)          ;; Discovers if adjascent grid is occupied
+
+                (OR                             ;; Discovers boat's adjascent grid cell
                     (   
                         ;; Test specific boat's orientation and adjascency occupancy
                         (boat-head ?boat E)                
-                        (adj SE ?adj_gc_2 ?adj_gc)    ;; Discovers 2 steps adjascent grid cell                
+                        (adj SE ?adj_gc_2 ?adj_gc)      ;; Discovers 2 steps adjascent grid cell                
                     )
                     (   
                         ;; Test specific boat's orientation and adjascency occupancy
                         (boat-head ?boat S)                
-                        (adj SW ?adj_gc_2 ?adj_gc)    ;; Discovers 2 steps adjascent grid cell            
+                        (adj SW ?adj_gc_2 ?adj_gc)      ;; Discovers 2 steps adjascent grid cell            
                     )
                     (   
                         ;; Test specific boat's orientation and adjascency occupancy
                         (boat-head ?boat W)                
-                        (adj NW ?adj_gc_2 ?adj_gc)    ;; Discovers 2 steps adjascent grid cell
+                        (adj NW ?adj_gc_2 ?adj_gc)      ;; Discovers 2 steps adjascent grid cell
                     )
                     (   
                         ;; Test specific boat's orientation and adjascency occupancy
                         (boat-head ?boat N)                
-                        (adj NE ?adj_gc_2 ?adj_gc)    ;; Discovers 2 steps adjascent grid cell
+                        (adj NE ?adj_gc_2 ?adj_gc)      ;; Discovers 2 steps adjascent grid cell
                     )
                 
                 )
@@ -133,48 +138,104 @@
                 (adj ?boat-head ?adj_gc_2 ?adj_gc)      ;; Discovers adjascent grid 2 steps ahead
                 (at ?intruder ?adj_gc_2)                ;; Discovers if adjascent grid 2 steps ahead is occupied
             )
-            ((!operator crossing-starboard-detected))
+            (;; tasks network
+                (!operator crossing-starboard-detected)
+            )
 
         )
 
-        (:operator (!head-on-detected ?boat)
-            ()
-            ((way-free ?boat))
-            ((colregs head-on))
+        (:operator (!head-on-detected ?boat ?boat-head)
+            (;;precond
+                (?at        ?boat   ?gc)            ;; Discovers grid cell occupied by main vessel
+                (OR                                 ;; Discovers boat's adjascent grid cell that is at its starboard side
+                    (   
+                        (boat-head  ?boat E)        ;; current EAST
+                        (adj SE     ?adj_gc ?gc)    ;; starboard at: SE
+                    )
+                    (   
+                        (boat-head  ?boat S)        ;; current SOUTH
+                        (adj SW     ?adj_gc ?gc)    ;; starboard at: SW
+                    )
+                    (   
+                        (boat-head  ?boat W)        ;; current WEST
+                        (adj NW     ?adj_gc ?gc)    ;; starboard at: NW
+                    )
+                    (   
+                        (boat-head  ?boat N)        ;; current NORTH
+                        (adj NE     ?adj_gc ?gc)    ;; starboard at: NE
+                    )
+                
+                )
+            )
+            (;;delete list
+                (way-free   ?boat)
+                (at         ?boat   ?gc)
+            )
+            (;;add list
+                (at         ?boat   ?adj_gc)
+            )
         )
 
         (:operator (!goto ?boat ?gc ?adj-gc)
-            ()
-            ((at ?boat ?gc))
-            ((at ?boat ?adj-gc))
+            ();;precond
+            (;;delete list
+                (at ?boat ?gc)
+            )
+            (;;add list
+                (at ?boat ?adj-gc)
+            )
         )
 
         ;; The method for obstacle avoidance
-        (:method (colregs-decision)
+        (:method (colregs-decision2)
 
             head-on
-            (on intruder head-on-angle)
-            ((!evade-by-starboard))
+            (;;precond
+                on intruder head-on-angle
+            )
+            (;; tasks network
+                (!evade-by-starboard)
+            )
 
             overtaking-right-crossing
-            (on intruder overtaking-right-angle)
-            ((!overtake-by- ?x))
+            (;;precond
+                on intruder overtaking-right-angle
+            )
+            (;; tasks network
+                (!overtake-by- ?x)
+            )
 
             overtaking-left-crossing
-            (on intruder overtaking-left-angle)
-            ((!drop ?y) (!pickup ?x))
+            (;;precond
+                on intruder overtaking-left-angle
+            )
+            (;; tasks network
+                (!drop ?y) 
+                (!pickup ?x)
+            )
 
             crossing
-            (on intruder crossing-angle)
-            ((!drop ?y) (!pickup ?x))
+            (;;precond
+                on intruder crossing-angle
+            )
+            (;; tasks network
+                (!drop ?y) 
+                (!pickup ?x)
+            )
 
         )
         
         ;; verify-collision operator
         (:operator (!verify-collision ?boat ?boat-head)
-            ((at ?boat ?gc)(adj ?boat-head ?adj_gc ?gc)(NOT(at ?intruder ?adj_gc)))
-            ()
-            ((way-free ?boat))
+            (;;precond
+                (at     ?boat ?gc)                          ;; gets boat
+                (adj    ?boat-head  ?adj_gc ?gc)            ;; gets adj_gc
+                (NOT(at ?intruder   ?adj_gc))               ;; no cllision detected
+            )
+            ();;delete list
+            (;;add list
+                (way-free ?boat)
+            )
         )
 
         
