@@ -63,6 +63,7 @@
             (;;precond
                 (boat-head  ?boat   ?dir        )
                 (adj        ?dir    ?adj-gc ?gc )
+                (way-free   ?boat               )
             )
             (;; tasks network
                 (!goto      ?boat   ?gc     ?adj-gc)
