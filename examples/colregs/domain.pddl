@@ -72,85 +72,122 @@
                 (at ?boat   ?gc)                ;; Discovers boat's current grid cell
                 (OR                             ;; Test if any of the 2 steps adjascent grid cells are occupied
                     (OR 
-                        (
+                        (;; Intruder on EAST
                             (adj E  ?adj_gc     ?gc         )   ;; Gets EAST adjascent grid 
                             (at     ?intruder   ?adj_gc     )   ;; Tests if the adjascent grid is occupied
                         )
-                        (
+                        (;; Intruder on EAST EAST
                             (adj E  ?adj_gc     ?gc         )   ;; Gets EAST adjascent grid 
                             (adj E  ?adj_gc2    ?adj_gc     )   ;; Gets EAST EAST 
                             (at     ?intruder   ?adj_gc2    )   ;; Tests if the adjascent grid is occupied 
                         )                        
                     )
                     (OR 
-                        (
+                        (;; Intruder on SOUTH-EAST
                             (adj SE ?adj_gc     ?gc         )   ;; Gets SOUTH EAST adjascent grid  
                             (at     ?intruder   ?adj_gc     )   ;; Tests if the adjascent grid is occupied
                         )
-                        (
+                        (;; Intruder on SOUTH-EAST EAST
                             (adj SE ?adj_gc     ?gc         )   ;; Gets SOUTH EAST adjascent grid  
                             (adj E  ?adj_gc2    ?adj_gc     )   ;; Gets SOUTH EAST EAST adjascent grid  
                             (at     ?intruder   ?adj_gc2    )   ;; Tests if the adjascent grid is occupied
                         )
-                        (
+                        (;; Intruder on SOUTH-EAST SOUTH_EAST
                             (adj SE ?adj_gc     ?gc         )   ;; Gets SOUTH EAST adjascent grid                              
                             (adj SE ?adj_gc2    ?adj_gc     )   ;; Gets SOUTH EAST SOUTH EAST adjascent grid  
                             (at     ?intruder   ?adj_gc2    )   ;; Tests if the adjascent grid is occupied
                         )
-                        (   
+                        (;; Intruder on SOUTH-EAST SOUTH
                             (adj SE ?adj_gc     ?gc         )   ;; Gets SOUTH EAST adjascent grid  
                             (adj S  ?adj_gc2    ?adj_gc     )   ;; Gets SOUTH EAST SOUTH adjascent grid  
                             (at     ?intruder   ?adj_gc2    )   ;; Tests if the adjascent grid is occupied                   )
                         )
                     )
-                    ;;(OR   
-                    ;;    (adj S  ?adj_gc     ?gc         )         ;; Gets SOUTH adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj S  ?adj_gc2    ?adj_gc     )         ;; Gets SOUTH SOUTH adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;)
-                    ;;(OR   
-                    ;;    (adj SW ?adj_gc     ?gc         )        ;; Gets SOUTH WEST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj S  ?adj_gc2    ?adj_gc     )        ;; Gets SOUTH WEST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj SW ?adj_gc2    ?adj_gc     )        ;; Gets SOUTH WEST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj W  ?adj_gc2    ?adj_gc     )        ;; Gets SOUTH WEST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;)
-                    ;;(OR   
-                    ;;    (adj W  ?adj_gc     ?gc         )         ;; Gets WEST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj W  ?adj_gc2    ?adj_gc     )         ;; Gets WEST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;)
-                    ;;(OR   
-                    ;;    (adj NW ?adj_gc     ?gc         )        ;; Gets NORTH EAST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj W  ?adj_gc2    ?adj_gc     )        ;; Gets NORTH EAST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj NW ?adj_gc2    ?adj_gc     )        ;; Gets NORTH EAST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj N  ?adj_gc2    ?adj_gc     )        ;; Gets NORTH EAST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;)
-                    ;;(OR   
-                    ;;    (adj N  ?adj_gc     ?gc         )         ;; Gets NORTH adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj N  ?adj_gc2    ?adj_gc     )         ;; Gets NORTH adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;)
-                    ;;(OR   
-                    ;;    (adj NE ?adj_gc     ?gc         )        ;; Gets NORTTH EAST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj N  ?adj_gc2    ?adj_gc     )        ;; Gets NORTTH EAST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj NE ?adj_gc2    ?adj_gc     )        ;; Gets NORTTH EAST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;    (adj E  ?adj_gc2    ?adj_gc     )        ;; Gets NORTTH EAST adjascent grid  
-                    ;;    (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
-                    ;;)
+                    (OR
+                        (;; Intruder on SOUTH
+                            (adj S  ?adj_gc     ?gc         )         ;; Gets SOUTH adjascent grid  
+                            (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on SOUTH SOUTH
+                            (adj S  ?adj_gc2    ?adj_gc     )         ;; Gets SOUTH SOUTH adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )        
+                    )
+                    (OR
+                        (;; Intruder on SOUTH-WEST
+                            (adj SW ?adj_gc     ?gc         )        ;; Gets SOUTH WEST adjascent grid  
+                            (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on SOUTH-WEST SOUTH
+                            (adj S  ?adj_gc2    ?adj_gc     )        ;; Gets SOUTH WEST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )   
+                        (;; Intruder on SOUTH-WEST SOUTH-WEST
+                            (adj SW ?adj_gc2    ?adj_gc     )        ;; Gets SOUTH WEST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on SOUTH-WEST WEST
+                            (adj W  ?adj_gc2    ?adj_gc     )        ;; Gets SOUTH WEST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )
+                    )
+                    (OR
+                        (;; Intruder on WEST
+                            (adj W  ?adj_gc     ?gc         )         ;; Gets WEST adjascent grid  
+                            (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on WEST WEST
+                            (adj W  ?adj_gc2    ?adj_gc     )         ;; Gets WEST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )   
+                    )
+                    (OR   
+                        (;; Intruder on NORTH-WEST
+                            (adj NW ?adj_gc     ?gc         )        ;; Gets NORTH EAST adjascent grid  
+                            (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on NORTH-WEST WEST
+                            (adj W  ?adj_gc2    ?adj_gc     )        ;; Gets NORTH EAST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on NORTH-WEST NORTH-WEST
+                            (adj NW ?adj_gc2    ?adj_gc     )        ;; Gets NORTH EAST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on NORTH-WEST NORTH
+                            (adj N  ?adj_gc2    ?adj_gc     )        ;; Gets NORTH EAST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        ) 
+                    )
+                    (OR
+                        (;; Intruder on NORTH
+                            (adj N  ?adj_gc     ?gc         )         ;; Gets NORTH adjascent grid  
+                            (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on NORTH NORTH
+                            (adj N  ?adj_gc2    ?adj_gc     )         ;; Gets NORTH adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )   
+                        
+                    )
+                    (OR  
+                        (;; Intruder on NORTH-EAST
+                            (adj NE ?adj_gc     ?gc         )        ;; Gets NORTTH EAST adjascent grid  
+                            (at     ?intruder   ?adj_gc     )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on NORTH-EAST NORTH
+                            (adj N  ?adj_gc2    ?adj_gc     )        ;; Gets NORTTH EAST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on NORTH-EAST EAST
+                            (adj NE ?adj_gc2    ?adj_gc     )        ;; Gets NORTTH EAST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        )
+                        (;; Intruder on NORTH-EAST NORTH-EAST
+                            (adj E  ?adj_gc2    ?adj_gc     )        ;; Gets NORTTH EAST adjascent grid  
+                            (at     ?intruder   ?adj_gc2    )      ;; Tests if the adjascent grid is occupied
+                        ) 
+                    )
                 )
             )
             (;; tasks network
@@ -298,6 +335,7 @@
         ;; free-boat
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         
+
         (:operator (!free-boat ?boat)
             ();;precond
             ();;delete list
