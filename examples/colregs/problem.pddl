@@ -116,7 +116,7 @@
         ;;(waypoint       GC_B5)
         ;;(waypoint       GC_B6)
         ;;(waypoint       GC_B7)
-        (waypoint-last    GC_B7)
+        (waypoint_last    GC_B7)
 
         ;;;
         ;;;  initial states
@@ -125,12 +125,12 @@
         (boat       boat1                   )
         (at         boat1       GC_B1       )
         (boat_head  boat1       E           )
-        (way_free   boat1                   )
+        (wayfree    boat1                   )
 
         (boat       intruder                )
         (at         intruder    GC_B5       )
         (boat_head  intruder    W           )
-        (way_free   intruder                )
+        (wayfree    intruder                )
         
         
     )

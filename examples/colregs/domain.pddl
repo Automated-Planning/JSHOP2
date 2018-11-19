@@ -31,7 +31,7 @@
 
                 (at                     ?boat       ?gc             )
                 (NOT(waypoint-last      ?gc)                        )
-                (way_free               ?boat                       )
+                (wayfree               ?boat                       )
                 ;;(adj                    ?boat_head  ?adj_gc     ?gc )           ;; gets adj_gc
             )                    
             (;; tasks network
@@ -39,7 +39,7 @@
 
                 (collision-detection    ?boat       ?boat_head          )
                 (goto-next-position     ?boat       ?gc                 )
-                (sail                   ?boat       ?boat_head)
+                (sail                   ?boat       ?boat_head          )
             )     
 
             sail3_NotEnd_ObstacleDetected
@@ -48,7 +48,7 @@
 
                 (at                     ?boat       ?gc             )
                 (NOT(waypoint-last      ?gc)                        )
-                (NOT(way_free           ?boat)                      )
+                (NOT(wayfree           ?boat)                      )
                 (adj                    ?boat_head  ?adj_gc     ?gc ) ;; sai essa precondicap
             )               
             (;; tasks network
@@ -166,7 +166,7 @@
         (:operator (!collision-detected ?boat)
             ();;precond
             (;;delete list            
-                (way_free ?boat)
+                (wayfree ?boat)
             )
             ();;add list
 
@@ -181,7 +181,7 @@
             (;;precond
                 (boat_head  ?boat   ?dir        )   ;; Discovers boat's direction
                 (adj        ?dir    ?adj_gc ?gc )   ;; Discovers adjacent grid cell
-                (way_free   ?boat               )   ;; Moves only if there is no obstacle detected
+                (wayfree   ?boat               )   ;; Moves only if there is no obstacle detected
             )
             (;; tasks network
                 (!goto      ?boat   ?gc     ?adj_gc)
@@ -230,6 +230,7 @@
             )
             (;; tasks network
                 (!head-on-detected ?boat ?boat_head)
+                ;;(!free-boat ?boat)
             )
 
             crossing-starboard
@@ -293,6 +294,18 @@
         ;; head-on-detected
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         
+        (:operator (!free-boat ?boat)
+            ();;precond
+            ();;delete list
+            (;;add list
+                (wayfree    ?boat)
+            )
+        )
+
+        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+        ;; head-on-detected
+        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+        
         (:operator (!head-on-detected ?boat ?boat_head)
             (;;precond
                 (at        ?boat   ?gc)             ;; Discovers grid cell occupied by main vessel
@@ -319,9 +332,8 @@
             (;;delete list
                 (at         ?boat   ?gc     )
             )
-            (;;add list
+            (
                 (at         ?boat   ?adj_gc )
-                ; (way_free   ?boat           )
             )
         )
     )
