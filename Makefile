@@ -100,8 +100,8 @@ d: src/JSHOP2/*.java
 	cd examples/banjo_kiwi; rm domain.java; rm domain.txt; rm problem.java; rm *.class
 
 colregs: bin.build/JSHOP2.jar
-	cd examples/colregs; java JSHOP2.InternalDomain domain
-	cd examples/colregs; java JSHOP2.InternalDomain -ra problem
+	cd examples/colregs; java JSHOP2.InternalDomain domain.pddl
+	cd examples/colregs; java JSHOP2.InternalDomain -ra problem.pddl
 	cd examples/colregs; javac gui.java
-	cd examples/colregs; java gui
+	cd examples/colregs; java -Xss1024K -Xmx1024M gui
 	cd examples/colregs; rm domain.java; rm domain.txt; rm problem.java; rm *.class

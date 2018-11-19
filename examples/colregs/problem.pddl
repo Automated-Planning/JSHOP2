@@ -125,12 +125,12 @@
         (boat       boat1                   )
         (at         boat1       GC_B1       )
         (boat_head  boat1       E           )
-        (wayfree    boat1                   )
+        (way-free    boat1                  )
 
         (boat       intruder                )
         (at         intruder    GC_B5       )
         (boat_head  intruder    W           )
-        (wayfree    intruder                )
+        (way-free    intruder               )
         
         
     )

@@ -19,19 +19,22 @@
             sail1_LastWaypointReached
             (;;precond
                 ;; Reached last waypoint
-
-                (at             ?boat ?gc   )
-                (waypoint-last  ?gc         )
+                (OR
+                    (at         ?boat       GC_A7)
+                    (at         ?boat       GC_B7)
+                    (at         ?boat       GC_C7)
+                )
+                ;;(waypoint-last  ?gc         )
             )                                     
             ();; tasks network
 
-            sail2_NotEnd_WayFree
+            sail2_NotEnd_way-free
             (;;precond   
                 ;; NOT reached last waypoint, way is free (no obstacle)
 
                 (at                     ?boat       ?gc             )
                 (NOT(waypoint-last      ?gc)                        )
-                (wayfree               ?boat                       )
+                (way-free               ?boat                       )
                 ;;(adj                    ?boat_head  ?adj_gc     ?gc )           ;; gets adj_gc
             )                    
             (;; tasks network
@@ -48,7 +51,7 @@
 
                 (at                     ?boat       ?gc             )
                 (NOT(waypoint-last      ?gc)                        )
-                (NOT(wayfree           ?boat)                      )
+                (NOT(way-free           ?boat)                      )
                 (adj                    ?boat_head  ?adj_gc     ?gc ) ;; sai essa precondicap
             )               
             (;; tasks network
@@ -156,7 +159,8 @@
 
             no-intruder-on-danger-zone
             ();;precond
-            ();;task network
+            (;;task network
+            )
 
         )
 
@@ -166,7 +170,7 @@
         (:operator (!collision-detected ?boat)
             ();;precond
             (;;delete list            
-                (wayfree ?boat)
+                (way-free ?boat)
             )
             ();;add list
 
@@ -181,12 +185,13 @@
             (;;precond
                 (boat_head  ?boat   ?dir        )   ;; Discovers boat's direction
                 (adj        ?dir    ?adj_gc ?gc )   ;; Discovers adjacent grid cell
-                (wayfree   ?boat               )   ;; Moves only if there is no obstacle detected
+                (way-free   ?boat               )   ;; Moves only if there is no obstacle detected
             )
             (;; tasks network
                 (!goto      ?boat   ?gc     ?adj_gc)
             )
 
+            dont-move
             ()()
             
 
@@ -230,7 +235,6 @@
             )
             (;; tasks network
                 (!head-on-detected ?boat ?boat_head)
-                ;;(!free-boat ?boat)
             )
 
             crossing-starboard
@@ -291,14 +295,14 @@
         )
 
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        ;; head-on-detected
+        ;; free-boat
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         
         (:operator (!free-boat ?boat)
             ();;precond
             ();;delete list
             (;;add list
-                (wayfree    ?boat)
+                (way-free    ?boat)
             )
         )
 
@@ -333,7 +337,7 @@
                 (at         ?boat   ?gc     )
             )
             (
-                (at         ?boat   ?adj_gc )
+                (at         ?boat   ?adj_gc )(way-free    ?boat)
             )
         )
     )
