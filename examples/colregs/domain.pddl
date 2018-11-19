@@ -63,16 +63,6 @@
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
         (:method (collision-detection ?boat ?boat-head)
 
-
-            head-on
-            (;;precond   
-                (at     ?boat       ?gc                 )   ;; Discovers boat's current grid cell
-                (adj    ?boat-head  ?adj_gc ?gc         )   ;; Discovers adjascent grid explicity ahead
-                (at     ?intruder   ?adj_gc             )   ;; Discovers if adjascent grid explicity ahead is occupied
-                (adj    ?boat-head  ?adj_gc_2 ?adj_gc   )   ;; Discovers adjascent grid 2 steps ahead
-                (at     ?intruder   ?adj_gc_2           )   ;; Discovers if adjascent grid 2 steps ahead is occupied
-            )
-            
             ;; Intruder on radius
             intruder-on-danger-zone
             (;;precond   
@@ -151,7 +141,7 @@
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         ;; collision-detected operator
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:operator (collision-detected ?boat)
+        (:operator (!collision-detected ?boat)
             ();;precond
             (;;delete list
                 (way-free ?boat)
@@ -300,3 +290,5 @@
                 (at         ?boat   ?adj_gc)
             )
         )
+    )
+)
