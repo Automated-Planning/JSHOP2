@@ -125,12 +125,12 @@
         (boat       boat1                   )
         (at         boat1       GC_B1       )
         (boat_head  boat1       E           )
-        (way-free   boat1                   )
+        (way_free   boat1                   )
 
         (boat       intruder                )
         (at         intruder    GC_B5       )
         (boat_head  intruder    W           )
-        (way-free   intruder                )
+        (way_free   intruder                )
         
         
     )
@@ -140,6 +140,6 @@
         ;;;  goals
         ;;;
 
-        (sail   boat1       E   GC_B1)
+        (sail   boat1       E)
     )
 )

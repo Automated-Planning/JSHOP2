@@ -14,7 +14,7 @@
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         ;; The method for sailling between two waypoints
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:method (sail ?boat ?boat_head ?gc)
+        (:method (sail ?boat ?boat_head)
 
             sail1_LastWaypointReached
             (;;precond
@@ -31,15 +31,15 @@
 
                 (at                     ?boat       ?gc             )
                 (NOT(waypoint-last      ?gc)                        )
-                (way-free               ?boat                       )
-                (adj                    ?boat_head  ?adj_gc     ?gc )           ;; gets adj_gc
+                (way_free               ?boat                       )
+                ;;(adj                    ?boat_head  ?adj_gc     ?gc )           ;; gets adj_gc
             )                    
             (;; tasks network
                 ;; Verify collision and go to next detected free position
 
                 (collision-detection    ?boat       ?boat_head          )
                 (goto-next-position     ?boat       ?gc                 )
-                (sail                   ?boat       ?boat_head  ?adj_gc )
+                (sail                   ?boat       ?boat_head)
             )     
 
             sail3_NotEnd_ObstacleDetected
@@ -48,12 +48,12 @@
 
                 (at                     ?boat       ?gc             )
                 (NOT(waypoint-last      ?gc)                        )
-                (NOT(way-free           ?boat)                      )
+                (NOT(way_free           ?boat)                      )
                 (adj                    ?boat_head  ?adj_gc     ?gc ) ;; sai essa precondicap
             )               
             (;; tasks network
                 (colregs-decision       ?boat       ?boat_head          )
-                (sail                   ?boat       ?boat_head  ?adj_gc ) ;; passa a posicao atual
+                (sail                   ?boat       ?boat_head) ;; passa a posicao atual
             )
             
         )
@@ -151,7 +151,7 @@
                 )
             )
             (;; tasks network
-                (!operator collision-detected ?boat)
+                (!collision-detected ?boat)
             )
 
             no-intruder-on-danger-zone
@@ -166,7 +166,7 @@
         (:operator (!collision-detected ?boat)
             ();;precond
             (;;delete list            
-                (way-free ?boat)
+                (way_free ?boat)
             )
             ();;add list
 
@@ -181,11 +181,13 @@
             (;;precond
                 (boat_head  ?boat   ?dir        )   ;; Discovers boat's direction
                 (adj        ?dir    ?adj_gc ?gc )   ;; Discovers adjacent grid cell
-                (way-free   ?boat               )   ;; Moves only if there is no obstacle detected
+                (way_free   ?boat               )   ;; Moves only if there is no obstacle detected
             )
             (;; tasks network
                 (!goto      ?boat   ?gc     ?adj_gc)
             )
+
+            ()()
             
 
         )
@@ -227,7 +229,7 @@
                     
             )
             (;; tasks network
-                (!operator head-on-detected boat boat_head)
+                (!head-on-detected ?boat ?boat_head)
             )
 
             crossing-starboard
@@ -283,9 +285,8 @@
                 (at ?intruder ?adj_gc_2)                ;; Discovers if adjascent grid 2 steps ahead is occupied
             )
             (;; tasks network
-                (!operator collision-detected boat boat_head)
+                (!collision-detected ?boat ?boat_head)
             )
-
         )
 
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -316,11 +317,11 @@
                 )
             )
             (;;delete list
-                (way-free   ?boat)
-                (at         ?boat   ?gc)
+                (at         ?boat   ?gc     )
             )
             (;;add list
-                (at         ?boat   ?adj_gc)
+                (at         ?boat   ?adj_gc )
+                ; (way_free   ?boat           )
             )
         )
     )
