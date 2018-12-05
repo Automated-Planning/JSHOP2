@@ -1025,6 +1025,8 @@ public class JSHOP2GUI extends JFrame {
                 msg += "\n";
             }
             
+            System.out.print( msg + "\n" );
+
             // Creating the text area that will display the plan            
             TextArea textBox = new TextArea( msg, 24, 63 );
             textBox.setEditable( false );
