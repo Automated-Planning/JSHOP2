@@ -6,6 +6,10 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.event.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 /**
  * This is the graphical interface for JSHOP2
@@ -1019,13 +1023,30 @@ public class JSHOP2GUI extends JFrame {
             getContentPane().setLayout( new FlowLayout(FlowLayout.CENTER, 5, 20) );
             
             // Creating message string to display in text area            
-            String msg = "";
+            String msg      = "";
+            String plan_txt = "";
             for ( int i = 0; i < plan.size(); i++ ) {
-                msg += plan.get(i);
-                msg += "\n";
+
+                msg         += plan.get(i);
+                msg         += "\n";
+
+                plan_txt    += plan.get(i).substring(9);
+                plan_txt    += "\n";
+                
             }
             
-            System.out.print( msg + "\n" );
+            //System.out.print(plan_txt);
+            try {
+                File file = new File("plan.txt");
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(plan_txt);
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            
 
             // Creating the text area that will display the plan            
             TextArea textBox = new TextArea( msg, 24, 63 );
