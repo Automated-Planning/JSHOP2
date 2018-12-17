@@ -106,20 +106,23 @@ public class JSHOP2GUI extends JFrame {
     	Toolkit toolkit = Toolkit.getDefaultToolkit();
     	screenSize = toolkit.getScreenSize();    	
     	initFieldsAndCreateInterface();    	
-    	int x = (screenSize.width - getWidth()) / 2;
-    	int y = (screenSize.height - getHeight()) / 2;
+    	// int x = (screenSize.width - getWidth()) / 2;
+    	// int y = (screenSize.height - getHeight()) / 2;
     	
-    	// Center this frame's location
-    	setLocation(x, y);
+    	// // Center this frame's location
+    	// setLocation(x, y);
     	
-    	progressBar.setMaximum( planStepList.size() );
-        progressBar.setValue( 0 );
-        String msg = "Progress:  ";
-        msg += String.valueOf( iterator );
-        msg += " / ";
-        msg += String.valueOf( planStepList.size() );
-        progressLabel.setText( msg );
-        setVisible( true );
+    	// progressBar.setMaximum( planStepList.size() );
+        // progressBar.setValue( 0 );
+        // String msg = "Progress:  ";
+        // msg += String.valueOf( iterator );
+        // msg += " / ";
+        // msg += String.valueOf( planStepList.size() );
+        // progressLabel.setText( msg );
+        // setVisible( true );
+        while ( runOneStep());
+        System.exit(0);
+
     }
     
 //-----------------------------------------------------------------------------

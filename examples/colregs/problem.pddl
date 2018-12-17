@@ -130,18 +130,9 @@
         (way-free    boat1                  )
 
         (boat       intruder                )
-        (at         intruder    GC_B5       )
-        ; (boat_head  intruder    W           )
-        ; (way-free    intruder               )
-        
-        
+        (at         intruder    GC_B3       )        
     )
-
-    (
-        ;;;
-        ;;;  goals
-        ;;;
-
-        (sail   boat1       E)
+    (   ;; GOALS
+        (sail   boat1       E) 
     )
 )
